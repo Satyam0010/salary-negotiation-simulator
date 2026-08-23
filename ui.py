@@ -7,6 +7,41 @@ from analytics import negotiation_rounds_dataframe, round_score_dataframe, salar
 from scoring import SCORE_WEIGHTS
 
 
+def apply_theme() -> None:
+	"""Apply the single light, high-contrast theme used by every screen."""
+	st.markdown(
+		"""
+		<style>
+		:root { --canvas:#f7f8fa; --surface:#ffffff; --ink:#111827; --secondary:#4b5563; --muted:#6b7280; --line:#d1d5db; --accent:#b4533f; --accent-hover:#913d30; --accent-soft:#f8ebe8; }
+		.stApp { background:var(--canvas); color:var(--ink); }
+		.block-container { max-width:1120px; padding:2.25rem 2rem 4rem; }
+		h1,h2,h3,h4,h5,h6,p,label,[data-testid="stWidgetLabel"] p { color:var(--ink) !important; }
+		h1 { font-size:2.55rem; line-height:1.12; letter-spacing:0; } h2 { font-size:1.7rem; } h3 { font-size:1.3rem; } h4 { font-size:1rem; }
+		[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color:var(--secondary) !important; }
+		[data-testid="stForm"], [data-testid="stExpander"], [data-testid="stMetric"], [data-testid="stDataFrame"] { background:var(--surface); border:1px solid var(--line); border-radius:8px; }
+		[data-testid="stForm"] { padding:1.2rem; } [data-testid="stMetric"] { padding:1rem; } [data-testid="stMetricLabel"] { color:var(--secondary) !important; } [data-testid="stMetricValue"] { color:var(--ink) !important; }
+		[data-baseweb="input"] > div, [data-baseweb="textarea"] > div, [data-baseweb="select"] > div { background:var(--surface) !important; border:1px solid var(--line) !important; border-radius:6px; }
+		[data-baseweb="input"] input, [data-baseweb="textarea"] textarea, [data-baseweb="select"] *, [data-testid="stNumberInput"] input { background:var(--surface) !important; color:var(--ink) !important; -webkit-text-fill-color:var(--ink) !important; }
+		[data-baseweb="input"] input::placeholder, [data-baseweb="textarea"] textarea::placeholder, textarea::placeholder { color:var(--muted) !important; opacity:1 !important; -webkit-text-fill-color:var(--muted) !important; }
+		textarea { background:var(--surface) !important; color:var(--ink) !important; -webkit-text-fill-color:var(--ink) !important; caret-color:var(--accent); }
+		[data-baseweb="input"]:focus-within > div, [data-baseweb="textarea"]:focus-within > div, [data-baseweb="select"]:focus-within > div { border-color:var(--accent) !important; box-shadow:0 0 0 1px var(--accent); }
+		.stButton > button, [data-testid="stFormSubmitButton"] > button { background:var(--surface) !important; color:var(--ink) !important; border:1px solid var(--line) !important; border-radius:6px; font-weight:650; min-height:2.6rem; }
+		.stButton > button *, [data-testid="stFormSubmitButton"] > button * { color:inherit !important; -webkit-text-fill-color:currentColor !important; }
+		.stButton > button:hover, [data-testid="stFormSubmitButton"] > button:hover { background:var(--accent-soft) !important; color:var(--ink) !important; border-color:var(--accent) !important; }
+		.stButton > button:focus-visible, [data-testid="stFormSubmitButton"] > button:focus-visible { outline:3px solid var(--accent-soft); outline-offset:2px; }
+		button[kind="primary"], button[kind="primaryFormSubmit"], button[data-testid="stBaseButton-primary"], button[data-testid="stBaseButton-primaryFormSubmit"] { background:var(--accent) !important; color:#fff !important; border-color:var(--accent) !important; }
+		button[kind="primary"] *, button[kind="primaryFormSubmit"] *, button[data-testid="stBaseButton-primary"] *, button[data-testid="stBaseButton-primaryFormSubmit"] * { color:#fff !important; -webkit-text-fill-color:#fff !important; }
+		button[kind="primary"]:hover, button[kind="primaryFormSubmit"]:hover, button[data-testid="stBaseButton-primary"]:hover, button[data-testid="stBaseButton-primaryFormSubmit"]:hover { background:var(--accent-hover) !important; border-color:var(--accent-hover) !important; color:#fff !important; }
+		button:disabled { background:#e5e7eb !important; color:var(--secondary) !important; border-color:#c5cad1 !important; opacity:1 !important; }
+		[data-testid="stAudioInput"] button, [data-testid="stAudioInput"] button:hover { background:var(--accent) !important; color:#fff !important; border-color:var(--accent) !important; } [data-testid="stAudioInput"] button * { color:#fff !important; }
+		[data-testid="stExpander"] summary, [data-testid="stExpander"] summary p, [data-testid="stAlert"] { color:var(--ink) !important; }
+		.hero { border-bottom:1px solid var(--line); padding-bottom:1.75rem; margin-bottom:2rem; } .eyebrow { color:var(--accent); font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; } .hero p { color:var(--secondary); font-size:1.05rem; }
+		@media (max-width:720px) { .block-container { padding:1.4rem 1rem 3rem; } h1 { font-size:2.15rem; } }
+		</style>
+		""", unsafe_allow_html=True,
+	)
+
+
 def _apply_dashboard_styles() -> None:
 	st.markdown(
 		"""

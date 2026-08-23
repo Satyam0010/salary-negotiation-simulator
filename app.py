@@ -16,57 +16,15 @@ from negotiation_engine import (
 )
 from session_state import initialize_session_state
 from scoring import score_negotiation
-from ui import render_results_dashboard
+from ui import apply_theme, render_results_dashboard
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 st.set_page_config(page_title="Salary Negotiation Simulator", page_icon="₹", layout="wide")
 initialize_session_state()
 
-st.markdown(
-    """
-    <style>
-    :root {
-        --canvas: #f7f6f3;
-        --surface: #fffefa;
-        --ink: #262522;
-        --muted: #706c65;
-        --line: #dedbd4;
-        --accent: #9a5b2f;
-        --accent-soft: #f1e8df;
-    }
-    .stApp { background: var(--canvas); color: var(--ink); }
-    .block-container { max-width: 1120px; padding: 2.5rem 2rem 4rem; }
-    .eyebrow { color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-    .hero { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2rem; }
-    .hero h1 { color: var(--ink); font-size: 2.8rem; font-weight: 650; line-height: 1.08; margin: .45rem 0 .6rem; }
-    .hero p { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0; }
-    h2, h3, h4 { color: var(--ink); letter-spacing: 0; }
-    h3 { font-size: 1.35rem; }
-    h4 { font-size: 1rem; }
-    [data-testid="stMetric"] { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.1rem; }
-    [data-testid="stMetricLabel"] { color: var(--muted); }
-    [data-testid="stMetricValue"] { color: var(--ink); font-size: 1.55rem; }
-    [data-testid="stMetricDelta"] { font-size: .8rem; }
-    [data-testid="stForm"] { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 1.25rem; }
-    [data-testid="stExpander"] { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-    .stButton > button, [data-testid="stFormSubmitButton"] > button { border-radius: 6px; font-weight: 650; min-height: 2.6rem; }
-    .stButton > button[kind="primary"], [data-testid="stFormSubmitButton"] > button[kind="primary"] { background: var(--accent); border-color: var(--accent); }
-    [data-baseweb="input"] > div, [data-baseweb="textarea"] > div, [data-baseweb="select"] > div { border-color: var(--line); border-radius: 6px; }
-    @media (max-width: 720px) {
-        .block-container { padding: 1.5rem 1rem 3rem; }
-        .hero h1 { font-size: 2.2rem; }
-        [data-testid="stMetricValue"] { font-size: 1.3rem; }
-    }
-    </style>
-    <div class="hero">
-      <div class="eyebrow">Professional practice console</div>
-      <h1>Salary Negotiation Simulator</h1>
-      <p>Practice the conversation before the real conversation.</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+apply_theme()
+st.markdown('<div class="hero"><div class="eyebrow">Professional practice console</div><h1>Salary Negotiation Simulator</h1><p>Practice the conversation before the real conversation.</p></div>', unsafe_allow_html=True)
 
 if not st.session_state.simulation_started:
     st.subheader("Prepare your profile")
@@ -180,7 +138,7 @@ else:
     st.subheader("Or respond by voice")
     with st.form("audio_response_form"):
         audio_response = st.audio_input("Record your response")
-        audio_submitted = st.form_submit_button("Analyze Audio")
+        audio_submitted = st.form_submit_button("Analyze Audio", type="primary")
     if audio_submitted:
         try:
             transcript = transcribe_audio(audio_response)

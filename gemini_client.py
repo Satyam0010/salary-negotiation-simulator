@@ -14,6 +14,7 @@ from prompts import HR_SYSTEM_PROMPT, build_assessment_prompt, build_round_promp
 
 LOGGER = logging.getLogger(__name__)
 load_dotenv()
+DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"
 
 
 class GeminiServiceError(Exception):
@@ -34,7 +35,7 @@ def test_gemini_connection() -> str:
     """Make one explicit, minimal Gemini request for configuration testing."""
     try:
         response = get_gemini_client().models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            model=os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL),
             contents="Reply with exactly: Gemini connection successful.",
         )
         message = (response.text or "").strip()
@@ -103,7 +104,7 @@ def generate_performance_assessment(profile: dict, history: list[dict]) -> dict:
     """Request category assessments; Python owns the final weighted score."""
     if not os.getenv("GEMINI_API_KEY"):
         raise GeminiServiceError("Gemini is required to generate the performance assessment.")
-    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    model = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
     try:
         LOGGER.info("Gemini API request started: operation=performance_assessment model=%s", model)
         response = get_gemini_client().models.generate_content(
@@ -132,7 +133,7 @@ def generate_hr_turn(profile: dict, current_offer: int, current_round: int, hist
         counter_offer = min(profile["target_salary"], current_offer + (3000 if quality >= 60 else 1000))
         return {"hr_response": f"I hear your position. Please connect your request to measurable impact in your work. I can move to ₹{counter_offer:,.0f}, but I need stronger evidence to go further.", "counter_offer": counter_offer, "round": current_round, "negotiation_status": "ongoing", "candidate_argument_quality": quality, "hr_decision": "counter", "reason": "The response was assessed for specificity and evidence.", "next_challenge": "Quantify the result of your strongest achievement."}
     try:
-        model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        model = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
         LOGGER.info("Gemini API request started: operation=hr_turn model=%s round=%s", model, current_round)
         response = get_gemini_client().models.generate_content(
             model=model,
@@ -148,4 +149,4 @@ def generate_hr_turn(profile: dict, current_offer: int, current_round: int, hist
         raise
     except Exception as error:
         LOGGER.exception("Gemini API request failed: operation=hr_turn error_type=%s", type(error).__name__)
-        raise GeminiServiceError("The AI service is temporarily unavailable. Please try again.") from error
+        raise GeminiServiceError("AI rate limit reached temporarily. Please wait a few seconds and try again.") from error

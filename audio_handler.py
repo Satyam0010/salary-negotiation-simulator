@@ -5,7 +5,7 @@ import os
 
 from google.genai import types
 
-from gemini_client import GeminiServiceError, get_gemini_client
+from gemini_client import DEFAULT_GEMINI_MODEL, GeminiServiceError, get_gemini_client
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def transcribe_audio(audio_input) -> str:
 		raise ValueError("The recorded audio was empty. Please record your response again.")
 
 	mime_type = getattr(audio_input, "mime_type", None) or "audio/wav"
-	model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+	model = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
 	LOGGER.info("Audio transcription request started: model=%s mime_type=%s bytes=%s", model, mime_type, len(audio_bytes))
 	try:
 		response = get_gemini_client().models.generate_content(

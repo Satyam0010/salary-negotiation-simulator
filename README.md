@@ -6,13 +6,13 @@
 
 ### 🚀 Live Demo
 
-**[ ADD LIVE STREAMLIT DEMO LINK HERE ]**
+**https://salary-negotiation-simulator-nhdmgsuwnuxwjz2wt7sqys.streamlit.app/**
 
 <br>
 
 ### 💻 Source Code
 
-**[ GitHub Repository ]**
+**https://github.com/Satyam0010/salary-negotiation-simulator**
 
 </div>
 
